@@ -96,6 +96,52 @@ general-agentic-memory/
 
 ## 📖GAM Getting Started
 
+### 🚀 Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/general-agentic-memory.git
+cd general-agentic-memory
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Install the package
+pip install -e .
+```
+
+### 💡 Quick Start
+
+```python
+from gam import MemoryAgent, OpenRouterModel, build_session_chunks_from_text
+
+# Initialize LLM
+llm = OpenRouterModel(
+    model="gpt-4o-mini",
+    api_key="your-api-key"
+)
+
+# Create memory agent
+memory_agent = MemoryAgent(llm)
+
+# Process long text
+long_text = "Your long document content here..."
+sessions = build_session_chunks_from_text(long_text, max_tokens=2000)
+
+# Build memory
+memory_agent.run_memory_agent(sessions=sessions)
+final_memory = memory_agent.get_memory_with_abstracts()
+
+print("Memory Events:", final_memory['events'])
+print("Overall Abstract:", final_memory['abstract'])
+```
+
+### 📚 Complete Examples
+
+For detailed examples and advanced usage, check out:
+- [`examples/quickstart/basic_usage.py`](./examples/quickstart/basic_usage.py) - Complete workflow examples with long text processing and deep research
+- [`examples/quickstart/model_usage.py`](./examples/quickstart/model_usage.py) - Model selection and configuration examples
+
 
 <span id='todo'/>
 
