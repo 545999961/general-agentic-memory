@@ -38,7 +38,7 @@ class IndexRetriever(AbsRetriever):
             print('cannot load index, error: ', e)
 
     def build(self, page_store: InMemoryPageStore):
-        self.page_store = page_store.list_all()
+        self.page_store = page_store
 
         self.page_store.save(os.path.join(self.config.index_dir, "pages"))
     

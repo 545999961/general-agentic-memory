@@ -17,7 +17,10 @@ class DenseRetriever(AbsRetriever):
         self.index = None
         self.doc_emb = None
         self.model = FlagAutoModel.from_finetuned(
-            config.model_name, 
+            config.model_name,
+            normalize_embeddings=config.normalize_embeddings,
+            pooling_method=config.pooling_method,
+            trust_remote_code=config.trust_remote_code,
             query_instruction_for_retrieval=config.query_instruction_for_retrieval,
             use_fp16=config.use_fp16,
             devices=config.devices
