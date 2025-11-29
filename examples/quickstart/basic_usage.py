@@ -135,20 +135,6 @@ def research_example(memory_store, page_store):
     except Exception as e:
         print(f"[WARN] BM25 检索器创建失败: {e}")
     
-    dense_index_dir = os.path.join(index_dir, "dense_index")
-    if os.path.exists(dense_index_dir):
-        import shutil
-        shutil.rmtree(dense_index_dir)
-    
-    dense_config = DenseRetrieverConfig(
-        index_dir=dense_index_dir,
-        model_name="BAAI/bge-m3"
-    )
-    dense_retriever = DenseRetriever(dense_config.__dict__)
-    dense_retriever.build(page_store)
-    retrievers["vector"] = dense_retriever
-    print("✅ Dense 检索器创建成功")
-    
     # Dense 检索器
     try:
         dense_index_dir = os.path.join(index_dir, "dense_index")
