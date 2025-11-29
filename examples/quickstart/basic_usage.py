@@ -33,9 +33,10 @@ def basic_memory_example():
     
     # 1. 配置并创建 Generator
     gen_config = OpenAIGeneratorConfig(
-        model="gpt-4o-mini",
+        model_name="gpt-4o-mini",
         api_key=os.getenv("OPENAI_API_KEY"),  # 从环境变量读取
-        temperature=0.3
+        temperature=0.3,
+        max_tokens=256
     )
     generator = OpenAIGenerator(gen_config)
     
@@ -74,28 +75,25 @@ def basic_memory_example():
         memory_agent.memorize(doc)
     
     # 6. 查看记忆状态
-    memory_state = memory_agent.get_memory_state()
+    memory_state = memory_agent.load()
     print(f"\n✅ 成功构建记忆:")
-    print(f"  - 记忆事件数: {len(memory_state.events)}")
     print(f"  - 记忆摘要数: {len(memory_state.abstracts)}")
-    
-    if memory_state.abstracts:
-        print(f"\n记忆总体摘要:")
-        for i, abstract in enumerate(memory_state.abstracts[:3], 1):
-            print(f"  {i}. {abstract.content[:100]}...")
-    
+        
     return memory_agent, memory_store, page_store
 
 
-def research_example(memory_agent, memory_store, page_store):
+
+
+def research_example(memory_store, page_store):
     """基于记忆的研究示例"""
     print("\n=== 基于记忆的研究示例 ===\n")
     
     # 1. 配置并创建 Generator
     gen_config = OpenAIGeneratorConfig(
-        model="gpt-4o-mini",
+        model_name="gpt-4o-mini",
         api_key=os.getenv("OPENAI_API_KEY"),
-        temperature=0.3
+        temperature=0.3,
+        max_tokens=2048
     )
     generator = OpenAIGenerator(gen_config)
     
@@ -150,7 +148,7 @@ def main():
         memory_agent, memory_store, page_store = basic_memory_example()
         
         # 2. 运行基于记忆的研究示例
-        research_result = research_example(memory_agent, memory_store, page_store)
+        research_result = research_example( memory_store, page_store)
         
         print("\n" + "=" * 60)
         print("✅ 示例运行完成！")

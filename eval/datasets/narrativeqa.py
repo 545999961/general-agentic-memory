@@ -17,8 +17,13 @@ class NarrativeQABenchmark(BaseBenchmark):
         """加载 NarrativeQA 数据集"""
         from datasets import load_dataset
         
-        # 加载数据集
-        dataset = load_dataset(self.config.data_path, split="test")
+        # 加载数据集（支持 parquet 格式或 HuggingFace 数据集名称）
+        if self.config.data_path.endswith('.parquet') or '/' in self.config.data_path:
+            # 如果是路径，使用 parquet 格式加载
+            dataset = load_dataset("parquet", data_dir=self.config.data_path, split="test")
+        else:
+            # 如果是数据集名称，直接加载
+            dataset = load_dataset(self.config.data_path, split="test")
         
         data_all = []
         for idx, item in enumerate(dataset):

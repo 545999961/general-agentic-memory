@@ -12,6 +12,8 @@ RETRIEVER="dense"
 EMBEDDING_MODEL="BAAI/bge-base-en-v1.5"
 MAX_SAMPLES=""
 OUTPUT_DIR="outputs/ruler"
+API_KEY=""
+API_BASE=""
 
 # 解析命令行参数
 while [[ $# -gt 0 ]]; do
@@ -34,6 +36,14 @@ while [[ $# -gt 0 ]]; do
             ;;
         --retriever)
             RETRIEVER="$2"
+            shift 2
+            ;;
+        --api-key)
+            API_KEY="--api-key $2"
+            shift 2
+            ;;
+        --api-base)
+            API_BASE="--api-base $2"
             shift 2
             ;;
         --max-samples)
@@ -71,6 +81,8 @@ python -m eval.run \
     --retriever "$RETRIEVER" \
     --embedding-model "$EMBEDDING_MODEL" \
     --output-dir "$OUTPUT_DIR" \
+    $API_KEY \
+    $API_BASE \
     $MAX_SAMPLES
 
 echo ""

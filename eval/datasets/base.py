@@ -109,12 +109,9 @@ class BaseBenchmark(ABC):
                 
                 # 提取问题并研究
                 question = self.extract_question(sample)
-                research_output = research_agent.research(
-                    question=question,
-                    top_k=self.config.top_k
-                )
+                research_output = research_agent.research(question)
                 
-                prediction = research_output.final_answer
+                prediction = research_output.integrated_memory
                 self.predictions.append(prediction)
                 
                 # 提取标准答案
@@ -162,16 +159,16 @@ class BaseBenchmark(ABC):
         # 创建 Generator
         if self.config.generator_type == "openai":
             gen_config = OpenAIGeneratorConfig(
-                model=self.config.model_name,
+                model_name=self.config.model_name,
                 api_key=self.config.api_key,
                 base_url=self.config.api_base,
             )
-            generator = OpenAIGenerator(gen_config)
+            generator = OpenAIGenerator(gen_config.__dict__)
         elif self.config.generator_type == "vllm":
             gen_config = VLLMGeneratorConfig(
-                model_path=self.config.model_name,
+                model_name=self.config.model_name,
             )
-            generator = VLLMGenerator(gen_config)
+            generator = VLLMGenerator(gen_config.__dict__)
         else:
             raise ValueError(f"Unknown generator type: {self.config.generator_type}")
         
@@ -180,17 +177,24 @@ class BaseBenchmark(ABC):
         page_store = InMemoryPageStore()
         
         # 创建检索器
+        retrievers = {}
         if self.config.retriever_type == "index":
             retriever_config = IndexRetrieverConfig()
-            retriever = IndexRetriever(retriever_config, memory_store, page_store)
+            retriever = IndexRetriever(retriever_config.__dict__)
+            retriever.build(page_store)
+            retrievers["page_index"] = retriever
         elif self.config.retriever_type == "bm25":
             retriever_config = BM25RetrieverConfig()
-            retriever = BM25Retriever(retriever_config, memory_store, page_store)
+            retriever = BM25Retriever(retriever_config.__dict__)
+            retriever.build(page_store)
+            retrievers["keyword"] = retriever
         elif self.config.retriever_type == "dense":
             retriever_config = DenseRetrieverConfig(
-                model_path=self.config.embedding_model or "BAAI/bge-base-en-v1.5"
+                model_name=self.config.embedding_model or "BAAI/bge-base-en-v1.5"
             )
-            retriever = DenseRetriever(retriever_config, memory_store, page_store)
+            retriever = DenseRetriever(retriever_config.__dict__)
+            retriever.build(page_store)
+            retrievers["vector"] = retriever
         else:
             raise ValueError(f"Unknown retriever type: {self.config.retriever_type}")
         
@@ -203,7 +207,9 @@ class BaseBenchmark(ABC):
         
         research_agent = ResearchAgent(
             generator=generator,
-            retriever=retriever,
+            page_store=page_store,
+            memory_store=memory_store,
+            retrievers=retrievers,
         )
         
         return memory_agent, research_agent

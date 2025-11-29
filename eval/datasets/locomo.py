@@ -110,12 +110,9 @@ class LoCoMoBenchmark(BaseBenchmark):
                         continue
                     
                     # 研究
-                    research_output = research_agent.research(
-                        question=question,
-                        top_k=self.config.top_k
-                    )
+                    research_output = research_agent.research(question)
                     
-                    prediction = research_output.final_answer
+                    prediction = research_output.integrated_memory
                     self.predictions.append(prediction)
                     ground_truths.append([answer] if answer else [""])
                     
