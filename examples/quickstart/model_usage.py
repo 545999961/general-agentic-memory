@@ -36,7 +36,7 @@ def openai_api_example():
     )
     
     # 2. 创建 Generator
-    generator = OpenAIGenerator(gen_config.__dict__)
+    generator = OpenAIGenerator.from_config(gen_config)
     
     # 3. 创建存储
     memory_store = InMemoryMemoryStore()
@@ -79,7 +79,7 @@ def custom_api_endpoint_example():
     )
     
     # 2. 创建 Generator
-    generator = OpenAIGenerator(gen_config.__dict__)
+    generator = OpenAIGenerator.from_config(gen_config)
     
     # 3. 创建存储
     memory_store = InMemoryMemoryStore()
@@ -116,7 +116,7 @@ def vllm_local_model_example():
         )
         
         # 2. 创建 Generator
-        generator = VLLMGenerator(gen_config.__dict__)
+        generator = VLLMGenerator.from_config(gen_config)
         
         # 3. 创建存储
         memory_store = InMemoryMemoryStore()
