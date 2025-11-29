@@ -188,7 +188,53 @@ print(f"Built {len(memory_state.abstracts)} memory abstracts")
 # 6. Create ResearchAgent for Q&A
 
 retrievers={}
+index_dir = './tmp'
+try:
+    page_index_dir = os.path.join(index_dir, "page_index")
+    if os.path.exists(page_index_dir):
+        import shutil
+        shutil.rmtree(page_index_dir)
+    
+    index_config = IndexRetrieverConfig(
+        index_dir=page_index_dir
+    )
+    index_retriever = IndexRetriever(index_config.__dict__)
+    index_retriever.build(page_store)
+    retrievers["page_index"] = index_retriever
+except Exception as e:
+    print(f"[WARN] page retriever error: {e}")
 
+try:
+    bm25_index_dir = os.path.join(index_dir, "bm25_index")
+    if os.path.exists(bm25_index_dir):
+        import shutil
+        shutil.rmtree(bm25_index_dir)
+    
+    bm25_config = BM25RetrieverConfig(
+        index_dir=bm25_index_dir,
+        threads=1
+    )
+    bm25_retriever = BM25Retriever(bm25_config.__dict__)
+    bm25_retriever.build(page_store)
+    retrievers["keyword"] = bm25_retriever
+except Exception as e:
+    print(f"[WARN] BM25 retriever error: {e}")
+
+try:
+    dense_index_dir = os.path.join(index_dir, "dense_index")
+    if os.path.exists(dense_index_dir):
+        import shutil
+        shutil.rmtree(dense_index_dir)
+    
+    dense_config = DenseRetrieverConfig(
+        index_dir=dense_index_dir,
+        model_path="BAAI/bge-m3"
+    )
+    dense_retriever = DenseRetriever(dense_config.__dict__)
+    dense_retriever.build(page_store)
+    retrievers["vector"] = dense_retriever
+except Exception as e:
+    print(f"[WARN] Dense retriever error: {e}")
 
 research_agent_kwargs = {
     "page_store": page_store,

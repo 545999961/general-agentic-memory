@@ -101,7 +101,7 @@ def research_example(memory_agent, memory_store, page_store):
     
     # 2. 创建检索器
     retriever_config = DenseRetrieverConfig(
-        model_path="BAAI/bge-base-en-v1.5",
+        model_path="BAAI/bge-m3",
         top_k=5
     )
     retriever = DenseRetriever(
