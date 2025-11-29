@@ -9,7 +9,8 @@ RULER (Rule-based Understanding of Long-context Evaluation Resource)
 import json
 from typing import Any, Dict, List
 from eval.datasets.base import BaseBenchmark, BenchmarkConfig
-from eval.utils import chunk_text_smartly, compute_metrics, normalize_answer
+from eval.utils import chunk_text_smartly
+from eval.utils.metrics import evaluate_answer_ruler
 
 
 class RULERBenchmark(BaseBenchmark):
@@ -117,11 +118,8 @@ class RULERBenchmark(BaseBenchmark):
         
         correct = 0
         for pred, gts in zip(predictions, ground_truths):
-            normalized_pred = normalize_answer(pred)
-            for gt in gts:
-                if normalized_pred == normalize_answer(gt):
-                    correct += 1
-                    break
+            if evaluate_answer_ruler(pred, gts):
+                correct += 1
         
         accuracy = correct / len(predictions) if predictions else 0.0
         

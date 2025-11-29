@@ -167,7 +167,7 @@ class LoCoMoBenchmark(BaseBenchmark):
     ) -> str:
         """将 session 转换为文本"""
         lines = [
-            f"=== SESSION {idx} - Dialogue Time: {timestamp} ===",
+            f"=== SESSION {idx} - Dialogue Time(available to answer questions): {timestamp} ===",
             ""
         ]
         

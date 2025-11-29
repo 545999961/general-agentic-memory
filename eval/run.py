@@ -126,12 +126,6 @@ def parse_args():
         help="最大样本数（用于快速测试）"
     )
     parser.add_argument(
-        "--num-workers",
-        type=int,
-        default=4,
-        help="并行工作进程数"
-    )
-    parser.add_argument(
         "--chunk-size",
         type=int,
         default=2000,
@@ -186,7 +180,6 @@ def main():
         retriever_type=args.retriever,
         embedding_model=args.embedding_model,
         max_samples=args.max_samples,
-        num_workers=args.num_workers,
         chunk_size=args.chunk_size,
         top_k=args.top_k,
         output_dir=args.output_dir,

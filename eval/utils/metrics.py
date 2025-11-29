@@ -41,6 +41,60 @@ def normalize_answer(s: str) -> str:
     return white_space_fix(remove_articles(remove_punc(lower(s))))
 
 
+def normalize_text_ruler(text: str) -> str:
+    """
+    RULER 数据集特定的文本标准化
+    与原 old/ruler_test.py 中的 normalize_text 保持一致
+    """
+    text = text.lower()
+    text = re.sub(r"[^\w\s]", " ", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
+def evaluate_answer_ruler(model_response: str, ground_truth_outputs: List[str]) -> bool:
+    """
+    RULER 数据集特定的答案评估方法
+    与原 old/ruler_test.py 中的 evaluate_answer 保持一致
+    
+    使用复杂的匹配逻辑：
+    1. 直接包含匹配（小写）
+    2. 标准化后包含匹配
+    3. 词级别匹配（所有重要词都在答案中）
+    """
+    if not ground_truth_outputs or not model_response:
+        return False
+
+    model_response_lower = model_response.lower()
+    model_response_normalized = normalize_text_ruler(model_response)
+
+    unique_answers = list(dict.fromkeys(ground_truth_outputs))
+
+    for answer in unique_answers:
+        answer_str = str(answer).strip()
+        if not answer_str:
+            continue
+
+        answer_lower = answer_str.lower()
+        # 检查1: 直接包含匹配
+        if answer_lower in model_response_lower:
+            continue
+
+        answer_normalized = normalize_text_ruler(answer_str)
+        # 检查2: 标准化后包含匹配
+        if answer_normalized in model_response_normalized:
+            continue
+
+        # 检查3: 词级别匹配（所有重要词都在答案中）
+        answer_words = [w for w in answer_normalized.split() if len(w) > 2]
+        if answer_words and all(word in model_response_normalized for word in answer_words):
+            continue
+
+        return False
+
+    return True
+
+
 def exact_match_score(prediction: str, ground_truths: List[str]) -> float:
     """
     计算 Exact Match 分数

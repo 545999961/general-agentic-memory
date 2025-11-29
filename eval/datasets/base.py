@@ -28,7 +28,6 @@ class BenchmarkConfig:
     
     # 评估配置
     max_samples: Optional[int] = None
-    num_workers: int = 4
     chunk_size: int = 2000
     top_k: int = 5
     

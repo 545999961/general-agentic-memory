@@ -7,7 +7,8 @@ NarrativeQA 是一个叙事阅读理解数据集，包含长文档和相关问�
 
 from typing import Any, Dict, List
 from eval.datasets.base import BaseBenchmark, BenchmarkConfig
-from eval.utils import chunk_text_by_sentences, compute_metrics
+from eval.utils import chunk_text_by_sentences
+from eval.utils.metrics import f1_score
 
 
 class NarrativeQABenchmark(BaseBenchmark):
@@ -67,9 +68,19 @@ class NarrativeQABenchmark(BaseBenchmark):
         ground_truths: List[List[str]]
     ) -> Dict[str, float]:
         """计算 F1 指标"""
-        return compute_metrics(
-            predictions, 
-            ground_truths, 
-            metrics=["f1"]
-        )
-
+        if len(predictions) != len(ground_truths):
+            raise ValueError("预测数量与标准答案数量不匹配")
+        
+        f1_scores = []
+        
+        for pred, gts in zip(predictions, ground_truths):
+            if not isinstance(gts, list):
+                gts = [gts]
+            
+            # 计算 F1
+            max_f1 = max([f1_score(pred, [gt]) for gt in gts]) if gts else 0.0
+            f1_scores.append(max_f1)
+        
+        return {
+            "f1": sum(f1_scores) / len(f1_scores) if f1_scores else 0.0,
+        }
