@@ -29,7 +29,7 @@ def openai_api_example():
     
     # 1. 配置 OpenAI Generator
     gen_config = OpenAIGeneratorConfig(
-        model="gpt-4o-mini",  # 或 "gpt-4", "gpt-3.5-turbo"
+        model_name="gpt-4o-mini",  # 或 "gpt-4", "gpt-3.5-turbo"
         api_key=os.getenv("OPENAI_API_KEY"),
         temperature=0.3,
         max_tokens=1000
@@ -73,7 +73,7 @@ def custom_api_endpoint_example():
     
     # 1. 配置自定义端点的 OpenAI Generator
     gen_config = OpenAIGeneratorConfig(
-        model="gpt-4o-mini",
+        model_name="gpt-4o-mini",
         api_key=os.getenv("OPENAI_API_KEY"),
         base_url="https://your-custom-endpoint.com/v1",  # 自定义端点
         temperature=0.3
@@ -109,10 +109,11 @@ def vllm_local_model_example():
         
         # 1. 配置 VLLM Generator
         gen_config = VLLMGeneratorConfig(
-            model_path="meta-llama/Llama-3-8B",  # 本地模型路径
+            model_name="Qwen2.5-7B-Instruct",  # 本地模型路径
+            api_key="",
+            base_url="",
             temperature=0.7,
-            max_tokens=512,
-            gpu_memory_utilization=0.9
+            max_tokens=512
         )
         
         # 2. 创建 Generator
