@@ -15,6 +15,7 @@ class OpenAIGeneratorConfig:
     thread_count: int | None = None
     system_prompt: str | None = None
     timeout: float = 60.0
+    use_schema: bool = False
 
 
 @dataclass
@@ -33,3 +34,4 @@ class VLLMGeneratorConfig:
     thread_count: Optional[int] = None
     system_prompt: Optional[str] = None
     timeout: float = 60.0
+    use_schema: bool = False

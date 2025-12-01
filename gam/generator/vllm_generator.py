@@ -30,6 +30,7 @@ class VLLMGenerator(AbsGenerator):
         self.thread_count = config.get("thread_count")
         self.system_prompt = config.get("system_prompt")
         self.timeout = config.get("timeout", 60.0)
+        self.use_schema = config.get("use_schema", False)
 
         # 兼容 openai SDK 的环境变量（可选）
         if self.api_key is not None:
@@ -79,7 +80,7 @@ class VLLMGenerator(AbsGenerator):
         # vLLM 结构化输出的推荐用法：guided_json
         # 也可换成 guided_grammar / guided_regex / guided_choice
         extra_body: Dict[str, Any] = {}
-        if schema is not None:
+        if schema is not None and self.use_schema:
             extra_body["guided_json"] = schema
 
         params: Dict[str, Any] = {

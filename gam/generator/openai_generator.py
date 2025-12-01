@@ -27,6 +27,7 @@ class OpenAIGenerator(AbsGenerator):
         self.thread_count = config.get("thread_count")
         self.system_prompt = config.get("system_prompt")
         self.timeout = config.get("timeout", 60.0)
+        self.use_schema = config.get("use_schema", False)
 
         if self.api_key is not None:
             os.environ["OPENAI_API_KEY"] = self.api_key
@@ -61,7 +62,7 @@ class OpenAIGenerator(AbsGenerator):
 
         # 构造 response_format
         response_format = None
-        if schema is not None:
+        if schema is not None and self.use_schema:
             response_format = {
                 "type": "json_schema",
                 "json_schema": {
@@ -101,12 +102,14 @@ class OpenAIGenerator(AbsGenerator):
             text = resp.choices[0].message.content or ""
         except Exception:
             text = ""
+        
+        text = text.split('</think>')[-1]
 
         out: Dict[str, Any] = {"text": text, "json": None, "response": resp.model_dump()}
 
         if schema is not None:
             try:
-                out["json"] = json.loads(text)
+                out["json"] = json.loads(text[text.find('{'): text.rfind('}') + 1])
             except Exception:
                 out["json"] = None
         return out

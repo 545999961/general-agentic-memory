@@ -304,7 +304,11 @@ def process_sample(
     working_base_url: str,
     working_model: str,
     max_tokens: int = 2000,
-    embedding_model_path: Optional[str] = None
+    embedding_model_path: Optional[str] = None,
+    use_schema: bool = False,
+    memory_api_type: str = "openai",
+    research_api_type: str = "openai",
+    working_api_type: str = "openai"
 ):
     """
     使用 GAM 框架处理单个样本。
@@ -338,14 +342,24 @@ def process_sample(
         
         # 3. 创建 Memory Generator
         print(f"\n步骤 1: 创建 Memory Generator")
-        memory_generator_config = OpenAIGeneratorConfig(
-            model_name=memory_model,
-            api_key=memory_api_key,
-            base_url=memory_base_url,
-            temperature=0.3,
-            max_tokens=256
-        )
-        memory_generator = OpenAIGenerator(memory_generator_config.__dict__)
+        if memory_api_type == "openai":
+            memory_generator_config = OpenAIGeneratorConfig(
+                model_name=memory_model,
+                api_key=memory_api_key,
+                base_url=memory_base_url,
+                temperature=0.3,
+                max_tokens=256
+            )
+            memory_generator = OpenAIGenerator(memory_generator_config.__dict__)
+        elif memory_api_type == "vllm":
+            memory_generator_config = VLLMGeneratorConfig(
+                model_name=memory_model,
+                api_key=memory_api_key,
+                base_url=memory_base_url,
+                temperature=0.3,
+                max_tokens=256
+            )
+            memory_generator = VLLMGenerator(memory_generator_config.__dict__)
         
         print(f"[OK] Memory Generator 创建完成")
         
@@ -453,24 +467,45 @@ def process_sample(
         
         # 6. 创建 Research Generator 和 Working Generator
         print(f"\n步骤 4: 创建 Research Generator 和 Working Generator")
-        research_generator_config = OpenAIGeneratorConfig(
-            model_name=research_model,
-            api_key=research_api_key,
-            base_url=research_base_url,
-            temperature=0.3,
-            max_tokens=2048
-        )
-        research_generator = OpenAIGenerator(research_generator_config.__dict__)
+        if research_api_type == "openai":
+            research_generator_config = OpenAIGeneratorConfig(
+                model_name=research_model,
+                api_key=research_api_key,
+                base_url=research_base_url,
+                temperature=0.3,
+                max_tokens=2048,
+                use_schema=use_schema
+            )
+            research_generator = OpenAIGenerator(research_generator_config.__dict__)
+        elif research_api_type == "vllm":
+            research_generator_config = VLLMGeneratorConfig(
+                model_name=research_model,
+                api_key=research_api_key,
+                base_url=research_base_url,
+                temperature=0.3,
+                max_tokens=2048,
+                use_schema=use_schema
+            )
+            research_generator = VLLMGenerator(research_generator_config.__dict__)
         
-        working_generator_config = OpenAIGeneratorConfig(
-            model_name=working_model,
-            api_key=working_api_key,
-            base_url=working_base_url,
-            temperature=0.3,
-            max_tokens=256
-        )
-        working_generator = OpenAIGenerator(working_generator_config.__dict__)
-        
+        if working_api_type == "openai":
+            working_generator_config = OpenAIGeneratorConfig(
+                model_name=working_model,
+                api_key=working_api_key,
+                base_url=working_base_url,
+                temperature=0.3,
+                max_tokens=256
+            )
+            working_generator = OpenAIGenerator(working_generator_config.__dict__)
+        elif working_api_type == "vllm":
+            working_generator_config = VLLMGeneratorConfig(
+                model_name=working_model,
+                api_key=working_api_key,
+                base_url=working_base_url,
+                temperature=0.3,
+                max_tokens=256
+            )
+            working_generator = VLLMGenerator(working_generator_config.__dict__)
         print(f"[OK] Research Generator 和 Working Generator 创建完成")
         
         # 7. 创建 ResearchAgent
@@ -614,16 +649,20 @@ def main():
     parser.add_argument("--memory-api-key", type=str, default="empty", help="Memory 模型 API Key")
     parser.add_argument("--memory-base-url", type=str, default="https://api.openai.com/v1", help="Memory 模型 Base URL")
     parser.add_argument("--memory-model", type=str, default="gpt-4o-mini", help="Memory 模型名称")
+    parser.add_argument("--memory-api-type", type=str, default="openai", choices=["openai", "vllm"], help="Memory 模型 API 类型")
     
     # Research Generator 配置
     parser.add_argument("--research-api-key", type=str, default="empty", help="Research 模型 API Key")
     parser.add_argument("--research-base-url", type=str, default="https://api.openai.com/v1", help="Research 模型 Base URL")
     parser.add_argument("--research-model", type=str, default="gpt-4o-mini", help="Research 模型名称")
+    parser.add_argument("--research-api-type", type=str, default="openai", choices=["openai", "vllm"], help="Research 模型 API 类型")
+    parser.add_argument("--use-schema", type=bool, default=False, help="是否使用 schema")
     
     # Working Generator 配置
     parser.add_argument("--working-api-key", type=str, default="empty", help="Working 模型 API Key")
     parser.add_argument("--working-base-url", type=str, default="https://api.openai.com/v1", help="Working 模型 Base URL")
     parser.add_argument("--working-model", type=str, default="gpt-4o-mini", help="Working 模型名称")
+    parser.add_argument("--working-api-type", type=str, default="openai", choices=["openai", "vllm"], help="Working 模型 API 类型")
     
     args = parser.parse_args()
     
@@ -695,7 +734,11 @@ def main():
                 args.working_base_url,
                 args.working_model,
                 max_tokens=args.max_tokens,
-                embedding_model_path=args.embedding_model_path
+                embedding_model_path=args.embedding_model_path,
+                use_schema=args.use_schema,
+                memory_api_type=args.memory_api_type,
+                research_api_type=args.research_api_type,
+                working_api_type=args.working_api_type
             )
             print(f"[OK] 样本 {sample_idx} 处理完成")
             all_results.append(result)
