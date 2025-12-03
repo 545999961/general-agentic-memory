@@ -55,6 +55,7 @@ A general memory system for agents, powered by deep-research
 * [🔥 News](#news)
 * [🏗️ Project Structure](#structure)
 * [🎯 Quick Start](#quick-start)
+* [🕐 TTL for Production](#ttl-time-to-live-for-production)
 * [🔬 Reproducing Paper Results](#reproduce)
 * [📖 Documentation](#doc)
 * [🌟 Citation](#cite)
@@ -254,7 +255,54 @@ research_summary = research_result.integrated_memory
 
 
 print(f"[OK] Research completed! Iteration count: {len(research_result.raw_memory.get('iterations', []))}")
-print(f"Research Summary: {research_summary}")
+print(f"Research Summary: {research_summary}```
+
+### 🕐 TTL (Time-To-Live) for Production
+
+For long-running applications, enable automatic cleanup of old memories and pages:
+
+```python
+from gam import TTLMemoryStore, TTLPageStore
+
+# Create stores with 30-day TTL
+memory_store = TTLMemoryStore(
+    dir_path="./data",
+    ttl_days=30,
+    enable_auto_cleanup=True
+)
+page_store = TTLPageStore(
+    dir_path="./data",
+    ttl_days=30,
+    enable_auto_cleanup=True
+)
+
+# Use with agents as normal
+memory_agent = MemoryAgent(
+    generator=generator,
+    memory_store=memory_store,
+    page_store=page_store
+)
+
+# Monitor cleanup statistics
+stats = memory_store.get_stats()
+print(f"Total: {stats['total']}, Valid: {stats['valid']}, Expired: {stats['expired']}")
+
+# Manual cleanup (if auto-cleanup disabled)
+removed = memory_store.cleanup_expired()
+print(f"Removed {removed} expired entries")
+```
+
+**Key Features:**
+- ✅ Prevents unbounded growth in long-running applications
+- ✅ Auto-cleanup on load (configurable)
+- ✅ Flexible TTL: days, hours, minutes, or seconds
+- ✅ Statistics tracking: total, valid, expired counts
+- ✅ Fully backward compatible with existing data
+- ✅ TTL can be disabled (works like regular stores)
+
+**See Also:** [`examples/quickstart/ttl_usage.py`](./examples/quickstart/ttl_usage.py) for complete examples.
+
+```
 ```
 
 ### 📚 Complete Examples
