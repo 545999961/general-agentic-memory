@@ -1,80 +1,37 @@
 [build-system]
-requires = ["setuptools>=45", "wheel"]
+requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "general-agentic-memory"
+name = "gam"
 version = "0.1.0"
-description = "A general memory system for agents, powered by deep-research"
+description = "GAM - General Agentic Memory (Text & Video)"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 license = {text = "MIT"}
-authors = [
-    {name = "GAM Team", email = "zhengliu1026@gmail.com"},
-]
-keywords = ["ai", "memory", "agent", "llm", "nlp"]
-classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Developers",
-    "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Topic :: Scientific/Engineering :: Artificial Intelligence",
-]
 
 dependencies = [
-    "tqdm",
-    "tiktoken",
-    "openai",
-    "transformers",
-    "torch",
-    "numpy",
-    "pandas",
-    "scikit-learn",
+    "pydantic>=2.0",
+    "tiktoken>=0.5",
+    "openai>=1.0",
+    "tqdm>=4.60",
+    "docker>=7.0",
+    "requests>=2.28",
+    "python-dotenv>=1.0",
+    "json_repair>=0.58.0"
 ]
 
 [project.optional-dependencies]
-dev = [
-    "pytest>=6.0",
-    "black>=22.0",
-    "flake8>=4.0",
-    "mypy>=0.900",
-]
+web = ["flask>=3.0", "rank_bm25>=0.2"]
+api = ["fastapi>=0.115", "uvicorn>=0.34"]
+pdf = ["PyPDF2>=3.0"]
+sglang = ["sglang"]
+all = ["flask>=3.0", "PyPDF2>=3.0", "rank_bm25>=0.2", "fastapi>=0.115", "uvicorn>=0.34"]
 
-[project.urls]
-Homepage = "https://github.com/VectorSpaceLab/general-agentic-memory"
-Repository = "https://github.com/VectorSpaceLab/general-agentic-memory"
-Issues = "https://github.com/VectorSpaceLab/general-agentic-memory/issues"
+[project.scripts]
+gam-add = "gam.cli:cli_add"
+gam-request = "gam.cli:cli_request"
+gam-skill-prompt = "gam.cli:cli_skill_prompt"
 
 [tool.setuptools.packages.find]
-where = ["."]
-include = ["gam*"]
-
-[tool.black]
-line-length = 88
-target-version = ['py38']
-include = '\.pyi?$'
-extend-exclude = '''
-/(
-  # directories
-  \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | build
-  | dist
-)/
-'''
-
-[tool.mypy]
-python_version = "3.8"
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = true
+where = ["src"]
