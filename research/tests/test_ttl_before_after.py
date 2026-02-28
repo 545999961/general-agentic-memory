@@ -8,12 +8,9 @@ Shows unbounded growth problem (BEFORE) and controlled growth (AFTER).
 """
 
 import os
-import sys
 import tempfile
 import shutil
 from datetime import datetime
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from gam_research.schemas.memory import InMemoryMemoryStore
 from gam_research.schemas.page import InMemoryPageStore, Page

@@ -14,9 +14,6 @@ import os
 import time
 from datetime import datetime, timedelta, timezone
 
-import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-
 from gam_research.schemas.ttl_memory import TTLMemoryStore, TTLMemoryEntry, TTLMemoryState
 from gam_research.schemas.memory import MemoryState
 

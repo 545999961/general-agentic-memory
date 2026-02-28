@@ -4,14 +4,10 @@ Standalone TTL Validation Test
 Tests TTL functionality without requiring full GAM package imports
 """
 
-import sys
 import os
 import tempfile
 import shutil
 import time
-
-# Add to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 # Import directly
 from gam_research.schemas.ttl_memory import TTLMemoryStore

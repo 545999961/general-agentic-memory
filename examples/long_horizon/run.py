@@ -1,7 +1,6 @@
 import argparse
 import json
 import os
-import sys
 from pathlib import Path
 from datetime import datetime
 
@@ -9,9 +8,6 @@ import openai
 from rich import print as rprint
 from tqdm import tqdm
 from rank_bm25 import BM25Okapi
-
-# Add src to path for gam
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
 from gam import (
     TextGAMAgent, GAMTree,

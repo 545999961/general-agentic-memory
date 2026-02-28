@@ -7,12 +7,6 @@ Start the GAM web interface for building, managing and browsing GAM.
 """
 
 import argparse
-import sys
-from pathlib import Path
-
-# Add src to path for development
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
-
 
 def main():
     parser = argparse.ArgumentParser(description='Run GAM Web Platform')

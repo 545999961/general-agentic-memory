@@ -14,9 +14,6 @@ import os
 import time
 from datetime import datetime, timezone
 
-import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-
 from gam_research.schemas.ttl_page import TTLPageStore
 from gam_research.schemas.page import Page
 

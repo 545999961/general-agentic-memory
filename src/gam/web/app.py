@@ -137,25 +137,6 @@ def run_server(
 
 
 if __name__ == "__main__":
-    """
-    直接运行此文件时的入口点。
-
-    注意：直接运行包含相对导入的文件需要从正确的目录运行，
-    或者使用模块方式运行：python3 -m gam.web.app
-
-    如果需要直接运行，请确保：
-    1. 从 src 目录运行：cd /share/project/chaofan/code/memory/gam/src && python3 -m gam.web.app
-    2. 或者设置 PYTHONPATH：PYTHONPATH=/share/project/chaofan/code/memory/gam/src python3 -m gam.web.app
-    """
-    import sys
-
-    # 添加 src 目录到 Python 路径
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    src_dir = os.path.join(current_dir, "..", "..", "..")
-    src_dir = os.path.abspath(src_dir)
-    if src_dir not in sys.path:
-        sys.path.insert(0, src_dir)
-
     # 尝试导入 generator（需要用户配置）
     generator = None
     try:
