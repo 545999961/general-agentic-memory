@@ -2,7 +2,7 @@
 
 English | [中文版](README_zh.md)
 
-A highly modular agentic file system framework that provides structured memory and operating environments for Large Language Models (LLMs). GAM supports both **text** and **video** modalities, offering four access levels: **Workflow API**, **CLI**, **REST API**, and **Web Platform**.
+A highly modular agentic file system framework that provides structured memory and operating environments for Large Language Models (LLMs). GAM supports both **text** and **video** modalities, offering four access levels: **Python SDK**, **CLI**, **REST API**, and **Web Platform**.
 
 ## Features
 
@@ -20,7 +20,7 @@ A highly modular agentic file system framework that provides structured memory a
 * 🎞️ **Long-horizon (Agent Trajectory)**: Efficient compression and organization of long-sequence agent trajectories (e.g., complex reasoning steps, tool invocation logs), enabling agents to manage context across extensive operations.
 
 ### 3. Implementation Methods
-* 🐍 **Workflow API**: High-level Python SDK for easy integration into agentic workflows.
+* 🐍 **Python SDK**: High-level Python SDK for easy integration into agentic workflows.
 * 💻 **CLI Tools**: Unified `gam-add` and `gam-request` commands for command-line interaction.
 * 🚀 **REST API**: High-performance RESTful API (FastAPI + Uvicorn) with auto-generated OpenAPI docs, request validation, and CORS support.
 * 🌐 **Web Platform**: Flask-based visualization and management interface.
