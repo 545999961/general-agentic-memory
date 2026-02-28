@@ -42,20 +42,20 @@ def main():
     parser.add_argument(
         '--model',
         type=str,
-        default='Qwen/Qwen3.5-122B-A10B',
-        help='Model name for LLM (default: gemini-2.5-flash-lite)'
+        default=None,
+        help='Model name for LLM (Env: GAM_MODEL, default: gpt-4o-mini)'
     )
     parser.add_argument(
         '--api-base',
         type=str,
-        default='http://172.26.211.42:38610/v1',
-        help='API base URL for LLM (default: https://api.key77qiqi.com/v1)'
+        default=None,
+        help='API base URL for LLM (Env: GAM_API_BASE, default: https://api.openai.com/v1)'
     )
     parser.add_argument(
         '--api-key',
         type=str,
-        default='inspectai',
-        help='API key for LLM (default: sk-xRPPLUR4IBf9ur70cE1QQSDgz8fmYcy3piM2WqSdxM9kNhkS)'
+        default=None,
+        help='API key for LLM (Env: GAM_API_KEY)'
     )
     parser.add_argument(
         '--max-tokens',
@@ -77,28 +77,36 @@ def main():
     
     args = parser.parse_args()
     
-    # Initialize generator if LLM is enabled
+    import os
+
     generator = None
     if not args.no_llm:
-        try:
-            from gam import OpenAIGenerator, OpenAIGeneratorConfig
-            
-            config = OpenAIGeneratorConfig(
-                model_name=args.model,
-                base_url=args.api_base,
-                api_key=args.api_key,
-                max_tokens=args.max_tokens,
-                temperature=args.temperature,
-            )
-            
-            print(f"🔗 Connecting to LLM: {args.model} at {args.api_base}")
-            generator = OpenAIGenerator(config)
-            print(f"✅ LLM connected successfully!")
-            
-        except Exception as e:
-            print(f"⚠️  Could not connect to LLM: {e}")
-            print(f"   Continuing without LLM - content will be stored as-is")
-            generator = None
+        api_key = args.api_key or os.environ.get("GAM_API_KEY") or os.environ.get("OPENAI_API_KEY")
+        if not api_key:
+            print("⚠️  No API key provided (use --api-key or set GAM_API_KEY)")
+            print("   Continuing without LLM - content will be stored as-is")
+        else:
+            try:
+                from gam import OpenAIGenerator, OpenAIGeneratorConfig
+
+                model = args.model or os.environ.get("GAM_MODEL", "gpt-4o-mini")
+                api_base = args.api_base or os.environ.get("GAM_API_BASE", "https://api.openai.com/v1")
+                config = OpenAIGeneratorConfig(
+                    model_name=model,
+                    base_url=api_base,
+                    api_key=api_key,
+                    max_tokens=args.max_tokens,
+                    temperature=args.temperature,
+                )
+
+                print(f"🔗 Connecting to LLM: {model} at {api_base}")
+                generator = OpenAIGenerator(config)
+                print(f"✅ LLM connected successfully!")
+
+            except Exception as e:
+                print(f"⚠️  Could not connect to LLM: {e}")
+                print(f"   Continuing without LLM - content will be stored as-is")
+                generator = None
     
     # Run server
     from gam.web import run_server

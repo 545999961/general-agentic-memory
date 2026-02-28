@@ -50,15 +50,15 @@ def main():
     wf = Workflow(
         "video",
         gam_dir=output_path,
-        # ---- LLM 配置（planner / 主模型）----
-        model="Qwen/Qwen3-VL-235B-A22B-Instruct",
-        api_base="http://127.0.0.1:22002/v1",
-        api_key="EMPTY",
+        # LLM config — set via env vars GAM_MODEL, GAM_API_BASE, GAM_API_KEY
+        # or pass explicitly here:
+        # model="gpt-4o",
+        # api_base="https://api.openai.com/v1",
+        # api_key="sk-xxx",
         max_tokens=4096,
         temperature=0.3,
-        # ---- 可选：指定不同的 segmentor 模型 ----
-        # segmentor_model="Qwen/Qwen3-VL-235B-A22B-Instruct",
-        # segmentor_api_base="http://127.0.0.1:22002/v1",
+        # segmentor_model="gpt-4o-mini",
+        # segmentor_api_base="https://api.openai.com/v1",
         verbose=True,
     )
 

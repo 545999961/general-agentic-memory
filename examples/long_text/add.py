@@ -45,13 +45,13 @@ def main():
     wf = Workflow(
         "text",
         gam_dir=output_path,
-        # ---- LLM 配置 ----
-        model="gpt-4o-mini",
-        api_base="https://api.key77qiqi.com/v1",
-        api_key="sk-xRPPLUR4IBf9ur70cE1QQSDgz8fmYcy3piM2WqSdxM9kNhkS",
+        # LLM config — set via env vars GAM_MODEL, GAM_API_BASE, GAM_API_KEY
+        # or pass explicitly here:
+        # model="gpt-4o-mini",
+        # api_base="https://api.openai.com/v1",
+        # api_key="sk-xxx",
         max_tokens=4096,
         temperature=0.3,
-        # ---- 可选项 ----
         use_chunking=True,
         memory_workers=4,
         verbose=True,

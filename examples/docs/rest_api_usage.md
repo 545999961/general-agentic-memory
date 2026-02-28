@@ -155,4 +155,4 @@ curl http://localhost:5001/
 
 ## Python Client Example
 
-A complete example is available at [examples/rest_api_usage.py](rest_api_usage.py).
+A complete example is available at [examples/rest_api_client.py](../rest_api_client.py).

@@ -61,7 +61,7 @@ gam-request --type text --gam-dir ./my_gam --question "What is the main conclusi
 python examples/run_api.py --port 5001
 # Interactive docs available at http://localhost:5001/docs
 # See usage example
-python examples/rest_api_usage.py
+python examples/rest_api_client.py
 ```
 
 #### 4. Web Interface
@@ -89,20 +89,20 @@ export GAM_CHAT_API_BASE="https://api.openai.com/v1"
 
 Detailed usage instructions for each component can be found in the following guides:
 
-* 🐍 **[Python SDK Usage](./examples/sdk_usage.md)**: `Workflow` API and advanced component usage.
-* 💻 **[CLI Usage Guide](./examples/cli_usage.md)**: Detailed `gam-add` and `gam-request` commands.
-* 🚀 **[REST API Usage](./examples/rest_api_usage.md)**: RESTful API access and programmatic integration.
-* 🌐 **[Web Usage Guide](./examples/web_usage.md)**: Setting up and running the visual management platform.
+* 🐍 **[Python SDK Usage](./examples/docs/sdk_usage.md)**: `Workflow` API and advanced component usage.
+* 💻 **[CLI Usage Guide](./examples/docs/cli_usage.md)**: Detailed `gam-add` and `gam-request` commands.
+* 🚀 **[REST API Usage](./examples/docs/rest_api_usage.md)**: RESTful API access and programmatic integration.
+* 🌐 **[Web Usage Guide](./examples/docs/web_usage.md)**: Setting up and running the visual management platform.
 
 ## Examples
 
-Check the `examples/` directory for sample projects:
+Check the [`examples/`](./examples/) directory for sample projects and usage guides:
 
 | Example | Description |
 |---|---|
-| `long_text_example/` | Text GAM building and QA. |
-| `long_video_example/` | Video GAM building and QA. |
-| `long_horizontal_example/` | Processing long horizontal videos. |
+| [`long_text/`](./examples/long_text/) | Text GAM building and QA. |
+| [`long_video/`](./examples/long_video/) | Video GAM building and QA. |
+| [`long_horizon/`](./examples/long_horizon/) | Long-horizon agent trajectory compression with search/memorize/recall. |
 
 ## Research
 

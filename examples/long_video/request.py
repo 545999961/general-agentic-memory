@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Text GAM — Request (Q&A) Example
+Video GAM — Request (Q&A) Example
 
-使用 Workflow("text") 对已构建的 GAM 进行问答。
+使用 Workflow("video") 对已构建的 Video GAM 进行问答。
 
 Usage:
     python request.py [gam_path] [question]
 
 Examples:
-    python request.py                                                         # 使用默认路径和问题
-    python request.py ./output/GAM                                            # 指定 GAM 路径
-    python request.py ./output/GAM "这篇论文的主要贡献是什么？"                    # 指定路径和问题
+    python request.py                                                          # 使用默认路径和问题
+    python request.py ./output/chunk_build_gam                                 # 指定 GAM 路径
+    python request.py ./output/chunk_build_gam "视频中发生了什么？"                # 指定路径和问题
 """
 
 import sys
@@ -28,8 +28,8 @@ def main():
     # ----------------------------------------------------------------
     # 1. 解析参数
     # ----------------------------------------------------------------
-    default_gam = Path(__file__).parent / "output" / "GAM"
-    default_question = "总结一下这篇论文的要点。"
+    default_gam = Path(__file__).parent / "output" / "chunk_build_gam"
+    default_question = "总结一下这个视频的主要内容。"
 
     gam_path = Path(sys.argv[1]) if len(sys.argv) > 1 else default_gam
     question = " ".join(sys.argv[2:]) if len(sys.argv) > 2 else default_question
@@ -37,22 +37,26 @@ def main():
     if not gam_path.exists():
         print(f"❌ GAM 不存在: {gam_path}")
         print(f"\nUsage: python {Path(__file__).name} [gam_path] [question]")
-        print(f"💡 提示: 请先使用 add.py 构建 GAM")
+        print(f"💡 提示: 请先使用 add.py 构建 Video GAM")
         return
 
     # ----------------------------------------------------------------
     # 2. 创建 Workflow  (只需要这一步！)
     # ----------------------------------------------------------------
     wf = Workflow(
-        "text",
+        "video",
         gam_dir=gam_path,
-        # ---- LLM 配置 ----
-        model="gpt-4o-mini",
-        api_base="https://api.key77qiqi.com/v1",
-        api_key="sk-xRPPLUR4IBf9ur70cE1QQSDgz8fmYcy3piM2WqSdxM9kNhkS",
+        # LLM config — set via env vars GAM_MODEL, GAM_API_BASE, GAM_API_KEY
+        # or pass explicitly here:
+        # model="gpt-4o",
+        # api_base="https://api.openai.com/v1",
+        # api_key="sk-xxx",
         max_tokens=4096,
         temperature=0.3,
-        # ---- 可选项 ----
+        # video_model="gpt-4o",
+        # video_api_base="https://api.openai.com/v1",
+        video_fps=1.0,
+        video_max_resolution=480,
         max_iterations=20,
         verbose=True,
     )

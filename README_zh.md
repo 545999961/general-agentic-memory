@@ -61,7 +61,7 @@ gam-request --type text --gam-dir ./my_gam --question "主要结论是什么？"
 python examples/run_api.py --port 5001
 # 交互式文档：http://localhost:5001/docs
 # 查看调用示例
-python examples/rest_api_usage.py
+python examples/rest_api_client.py
 ```
 
 #### 4. Web 界面
@@ -89,20 +89,20 @@ export GAM_CHAT_API_BASE="https://api.openai.com/v1"
 
 有关各组件的详细使用说明，请参阅以下文档：
 
-* 🐍 **[Python SDK 用法](./examples/sdk_usage.md)**: `Workflow` API、底层组件及高级用法。
-* 💻 **[CLI 命令行用法](./examples/cli_usage.md)**: `gam-add` 和 `gam-request` 命令详解。
-* 🚀 **[REST API 用法](./examples/rest_api_usage.md)**: RESTful API 调用与程序化集成。
-* 🌐 **[Web 平台用法](./examples/web_usage.md)**: 可视化管理界面的安装与启动。
+* 🐍 **[Python SDK 用法](./examples/docs/sdk_usage.md)**: `Workflow` API、底层组件及高级用法。
+* 💻 **[CLI 命令行用法](./examples/docs/cli_usage.md)**: `gam-add` 和 `gam-request` 命令详解。
+* 🚀 **[REST API 用法](./examples/docs/rest_api_usage.md)**: RESTful API 调用与程序化集成。
+* 🌐 **[Web 平台用法](./examples/docs/web_usage.md)**: 可视化管理界面的安装与启动。
 
 ## 示例
 
-参见 `examples/` 目录：
+参见 [`examples/`](./examples/) 目录：
 
 | 场景 | 说明 |
 |---|---|
-| `long_text_example/` | 文本 GAM 构建与问答示例 |
-| `long_video_example/` | 视频 GAM 构建与问答示例 |
-| `long_horizontal_example/` | 长横屏视频处理示例 |
+| [`long_text/`](./examples/long_text/) | 文本 GAM 构建与问答示例 |
+| [`long_video/`](./examples/long_video/) | 视频 GAM 构建与问答示例 |
+| [`long_horizon/`](./examples/long_horizon/) | 长时程智能体轨迹压缩示例（search/memorize/recall） |
 
 ## 研究代码
 
