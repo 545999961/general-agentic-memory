@@ -106,7 +106,7 @@ Check the [`examples/`](./examples/) directory for sample projects and usage gui
 
 ## Research
 
-The [`research/`](./research/) directory contains the original research codebase for the [GAM paper](https://arxiv.org/abs/2511.18423), including benchmark evaluation scripts (LoCoMo, HotpotQA, RULER, NarrativeQA) and the dual-agent (Memorizer + Researcher) implementation. It is published as a separate package `gam-research` to avoid conflicts with this main package:
+The [`research/`](./research/) directory contains the original research codebase for the [GAM paper](https://arxiv.org/abs/2511.18423), including benchmark evaluation scripts (LoCoMo, HotpotQA, RULER, NarrativeQA) and the dual-agent (Memorizer + Researcher) implementation:
 
 ```bash
 cd research
