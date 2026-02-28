@@ -106,7 +106,7 @@ export GAM_CHAT_API_BASE="https://api.openai.com/v1"
 
 ## 研究代码
 
-[`research/`](./research/) 目录包含 [GAM 论文](https://arxiv.org/abs/2511.18423)的代码，包括基准评测脚本（LoCoMo、HotpotQA、RULER、NarrativeQA）以及双智能体（Memorizer + Researcher）实现：
+[`research/`](./research/) 目录包含 [GAM 论文](https://arxiv.org/abs/2511.18423)的原始代码，包括基准评测脚本（LoCoMo、HotpotQA、RULER、NarrativeQA）以及双智能体（Memorizer + Researcher）实现：
 
 ```bash
 cd research
