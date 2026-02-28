@@ -25,7 +25,7 @@ task_queues: Dict[str, Any] = {}
 task_results: Dict[str, Any] = {}
 
 # Default base output path
-DEFAULT_OUTPUT_BASE = "/share/project/chaofan/code/memory/gam/examples/output/web_test"
+DEFAULT_OUTPUT_BASE = "./temp/web_test"
 
 
 # ---------------------------------------------------------------------------
